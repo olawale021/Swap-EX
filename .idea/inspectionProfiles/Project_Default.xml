@@ -1,0 +1,35 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="VulnerableLibrariesLocal" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="isIgnoringEnabled" value="true" />
+      <option name="ignoredModules">
+        <list>
+          <option value="MangoEX" />
+          <option value="MangoEX" />
+          <option value="MangoEX" />
+          <option value="MangoEX" />
+          <option value="MangoEX" />
+        </list>
+      </option>
+      <option name="ignoredPackages">
+        <list>
+          <option value="org.jetbrains.kotlin:kotlin-stdlib:1.4.0" />
+          <option value="commons-codec:commons-codec:1.9" />
+          <option value="org.apache.httpcomponents:httpclient:4.4" />
+          <option value="org.glassfish.jersey.core:jersey-common:2.31" />
+          <option value="com.fasterxml.jackson.core:jackson-databind:2.10.1" />
+        </list>
+      </option>
+      <option name="ignoredReasons">
+        <list>
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Not exploitable" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
