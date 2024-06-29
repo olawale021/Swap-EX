@@ -1,4 +1,4 @@
-package com.example.servlets;
+package com.example.servlets.Items;
 
 import com.example.models.items.ItemDAO;
 

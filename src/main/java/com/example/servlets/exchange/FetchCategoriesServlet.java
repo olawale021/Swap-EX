@@ -1,4 +1,4 @@
-package com.example.servlets;
+package com.example.servlets.exchange;
 
 import com.example.models.category.CategoryModel;
 import com.fasterxml.jackson.databind.ObjectMapper;

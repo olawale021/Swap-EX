@@ -1,4 +1,4 @@
-package com.example.servlets;
+package com.example.servlets.message;
 
 import com.example.models.exchanges.ExchangeDAO;
 import com.example.models.exchanges.ExchangeModel;

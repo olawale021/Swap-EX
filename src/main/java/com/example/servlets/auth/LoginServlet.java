@@ -1,4 +1,4 @@
-package com.example.servlets;
+package com.example.servlets.auth;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

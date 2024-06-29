@@ -1,4 +1,4 @@
-package com.example.servlets;
+package com.example.servlets.Items;
 
 import com.example.models.items.ItemDAO;
 import com.example.models.items.ItemModel;
@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

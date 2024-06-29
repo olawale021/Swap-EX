@@ -1,4 +1,4 @@
-package com.example.servlets;
+package com.example.servlets.exchange;
 
 import com.example.config.DBConnection;
 import org.json.JSONObject;
