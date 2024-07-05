@@ -107,7 +107,7 @@
             margin-right: 5px;
         }
         .btn-create-contract {
-            background-color: #28a745;
+            background-color: #8f0b0b;
             color: #ffffff;
             border: none;
             padding: 8px 16px;
@@ -121,7 +121,7 @@
         }
 
         .btn-create-contract:hover {
-            background-color: #218838;
+            background-color: #8f0b0b;
             color: #ffffff;
             text-decoration: none;
         }

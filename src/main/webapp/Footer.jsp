@@ -141,7 +141,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0">&copy; 2024 MangoEx. All rights reserved.</p>
+                    <p class="mb-0">&copy; 2024 SwapEx. All rights reserved.</p>
                 </div>
                 <div class="col-md-6 text-md-right">
                     <a href="#">Sitemap</a> | <a href="#">Accessibility</a> | <a href="#">Do Not Sell My Personal Information</a>

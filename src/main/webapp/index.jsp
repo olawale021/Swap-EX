@@ -55,7 +55,7 @@
 <main>
     <section class="hero">
         <div class="container text-center">
-            <h1 class="display-4">Swap Smarter with MangoEx</h1>
+            <h1 class="display-4">Swap Smarter with SwapEx</h1>
             <p class="lead">Your trusted platform for exchanging electronics, gadgets, clothing, vehicles, and more.</p>
             <a href="Register.jsp" class="btn btn-primary btn-lg mt-3">Start Swapping</a>
         </div>
