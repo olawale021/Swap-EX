@@ -47,6 +47,10 @@ public class MessageServlet extends HttpServlet {
             LOGGER.info("Fetched conversations: " + conversations.size());
 
             String exchangeIdParam = request.getParameter("exchangeId");
+            if ((exchangeIdParam == null || exchangeIdParam.isEmpty()) && !conversations.isEmpty()) {
+                exchangeIdParam = String.valueOf(conversations.get(0).getId());
+            }
+
             if (exchangeIdParam != null && !exchangeIdParam.isEmpty()) {
                 int exchangeId = Integer.parseInt(exchangeIdParam);
                 List<MessageModel> messages = messageDAO.getMessagesByExchangeId(exchangeId);
