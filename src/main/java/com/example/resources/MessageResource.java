@@ -1,5 +1,6 @@
 package com.example.resources;
 
+import com.example.config.DBConnection;
 import com.example.models.messages.MessageDAO;
 import com.example.models.messages.MessageModel;
 import org.json.JSONObject;
@@ -7,6 +8,7 @@ import org.json.JSONObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.logging.Level;
@@ -15,13 +17,14 @@ import java.util.logging.Logger;
 @Path("/messages")
 public class MessageResource {
     private static final Logger LOGGER = Logger.getLogger(MessageResource.class.getName());
-    private MessageDAO messageDAO = new MessageDAO();
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response sendMessage(String messageData) {
-        try {
+        try (Connection connection = DBConnection.getConnection()) {
+            MessageDAO messageDAO = new MessageDAO(connection);
+
             JSONObject json = new JSONObject(messageData);
             int exchangeId = json.getInt("exchangeId");
             int senderId = json.getInt("senderId");
@@ -51,7 +54,8 @@ public class MessageResource {
     @Path("/exchange/{exchangeId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMessagesByExchangeId(@PathParam("exchangeId") int exchangeId) {
-        try {
+        try (Connection connection = DBConnection.getConnection()) {
+            MessageDAO messageDAO = new MessageDAO(connection);
             return Response.ok(messageDAO.getMessagesByExchangeId(exchangeId)).build();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error fetching messages", e);

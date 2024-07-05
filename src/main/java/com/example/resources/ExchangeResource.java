@@ -1,5 +1,6 @@
 package com.example.resources;
 
+import com.example.config.DBConnection;
 import com.example.models.exchanges.ExchangeDAO;
 import com.example.models.exchanges.ExchangeModel;
 import org.json.JSONObject;
@@ -7,6 +8,7 @@ import org.json.JSONObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
@@ -16,13 +18,14 @@ import java.util.logging.Logger;
 @Path("/exchanges")
 public class ExchangeResource {
     private static final Logger LOGGER = Logger.getLogger(ExchangeResource.class.getName());
-    private ExchangeDAO exchangeDAO = new ExchangeDAO();
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createExchange(String exchangeData) {
-        try {
+        try (Connection connection = DBConnection.getConnection()) {
+            ExchangeDAO exchangeDAO = new ExchangeDAO(connection);
+
             JSONObject json = new JSONObject(exchangeData);
             ExchangeModel exchange = new ExchangeModel();
             exchange.setItemId(json.getInt("itemId"));
@@ -54,7 +57,9 @@ public class ExchangeResource {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getExchangeById(@PathParam("id") int id) {
-        try {
+        try (Connection connection = DBConnection.getConnection()) {
+            ExchangeDAO exchangeDAO = new ExchangeDAO(connection);
+
             ExchangeModel exchange = exchangeDAO.getExchangeById(id);
             if (exchange != null) {
                 return Response.ok(exchange).build();
@@ -70,7 +75,9 @@ public class ExchangeResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllExchanges() {
-        try {
+        try (Connection connection = DBConnection.getConnection()) {
+            ExchangeDAO exchangeDAO = new ExchangeDAO(connection);
+
             List<ExchangeModel> exchanges = exchangeDAO.getAllExchanges();
             return Response.ok(exchanges).build();
         } catch (SQLException e) {

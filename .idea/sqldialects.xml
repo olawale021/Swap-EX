@@ -2,5 +2,6 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/models/users/UserDAO.java" dialect="GenericSQL" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/aaeca598-463e-4872-8db1-3feccdd1da0b/console.sql" dialect="SQLite" />
   </component>
 </project>

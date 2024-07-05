@@ -1,6 +1,5 @@
 package com.example.models.exchanges;
 
-import com.example.config.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +7,15 @@ import java.util.logging.Logger;
 
 public class ExchangeDAO {
     private static final Logger LOGGER = Logger.getLogger(ExchangeDAO.class.getName());
+    private Connection connection;
+
+    public ExchangeDAO(Connection connection) {
+        this.connection = connection;
+    }
 
     public void createExchange(ExchangeModel exchange) throws SQLException {
         String query = "INSERT INTO exchanges (item_id, owner_id, interested_user_id, status, created_at, updated_at, owner_username, interested_user_username, item_title) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, exchange.getItemId());
             stmt.setInt(2, exchange.getOwnerId());
             stmt.setInt(3, exchange.getInterestedUserId());
@@ -40,8 +43,7 @@ public class ExchangeDAO {
                 "JOIN items i ON e.item_id = i.id " +
                 "WHERE e.owner_id = ? OR e.interested_user_id = ?";
         List<ExchangeModel> exchanges = new ArrayList<>();
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, userId);
             stmt.setInt(2, userId);
             LOGGER.info("Executing query to get exchanges by user ID: " + userId);
@@ -74,8 +76,7 @@ public class ExchangeDAO {
                 "JOIN users iu ON e.interested_user_id = iu.id " +
                 "JOIN items i ON e.item_id = i.id " +
                 "WHERE e.id = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
             LOGGER.info("Executing query to get exchange by ID: " + id);
             ResultSet rs = stmt.executeQuery();
@@ -108,8 +109,7 @@ public class ExchangeDAO {
                 "JOIN users iu ON e.interested_user_id = iu.id " +
                 "JOIN items i ON e.item_id = i.id";
         List<ExchangeModel> exchanges = new ArrayList<>();
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
             LOGGER.info("Executing query to get all exchanges");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {

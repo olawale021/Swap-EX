@@ -174,7 +174,6 @@
 
 <div class="wrapper">
     <div class="sidebar">
-        <!-- Sidebar content (same as before) -->
         <nav class="nav flex-column">
             <a class="nav-link" href="UserDashboard.jsp"><i class="fas fa-home"></i> Dashboard</a>
             <a class="nav-link active" href="UserItems.jsp"><i class="fas fa-th-list"></i> My Items</a>
@@ -305,13 +304,19 @@
         // Add existing images with hidden inputs
         if (photos && photos.length > 0) {
             photos.forEach(photo => {
-                let imageItem = $(`
-                <div class="image-upload-item">
-                    <img src="${photo}" alt="Item Image" style="width: 100%; height: 100%; object-fit: cover;">
-                    <span class="delete-image">&times;</span>
-                    <input type="hidden" name="existingPhotos" value="${photo}">
-                </div>
-            `);
+                console.log("Photo URL:", photo); // Log the photo URL directly
+
+                let imageItemHTML = `
+                    <div class="image-upload-item">
+                        <img src="${photo}" alt="Item Image" style="width: 100%; height: 100%; object-fit: cover;">
+                        <span class="delete-image">&times;</span>
+                        <input type="hidden" name="existingPhotos" value="${photo}">
+                    </div>
+                `;
+
+                console.log("Generated Image Item HTML:", imageItemHTML); // Log the HTML being generated
+
+                let imageItem = $(imageItemHTML);
                 $('#imageContainer').append(imageItem);
             });
         }
@@ -322,14 +327,12 @@
         $('#editItemModal').modal('show');
     }
 
-
-
     function handleImageUpload(input) {
         if (input.files && input.files.length > 0) {
             for (let i = 0; i < input.files.length; i++) {
                 let reader = new FileReader();
                 reader.onload = function(e) {
-                    let imageItem = $('<div class="image-upload-item"><img src="' + e.target.result + '"><span class="delete-image">&times;</span></div>');
+                    let imageItem = $('<div class="image-upload-item"><img src="' + e.target.result + '" alt="Uploaded Image" style="width: 100%; height: 100%; object-fit: cover;"><span class="delete-image">&times;</span></div>');
                     imageItem.insertBefore($('#imageContainer .image-upload-item:last'));
                 }
                 reader.readAsDataURL(input.files[i]);
@@ -351,7 +354,6 @@
         $(this).data('submitting', true);
         // Do not prevent default
     });
-
 </script>
 </body>
 </html>

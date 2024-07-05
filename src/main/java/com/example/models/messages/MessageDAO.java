@@ -9,6 +9,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MessageDAO {
+    private Connection connection;
+
+    public MessageDAO(Connection connection) {
+        this.connection = connection;
+    }
 
     private static final Logger LOGGER = Logger.getLogger(MessageDAO.class.getName());
 

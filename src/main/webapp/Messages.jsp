@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="com.example.config.StringUtils" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -92,6 +93,42 @@
             border-bottom: 1px solid #dee2e6;
             margin-bottom: 15px;
         }
+        .btn-contract {
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn-contract i {
+            margin-right: 5px;
+        }
+        .btn-create-contract {
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-create-contract:hover {
+            background-color: #218838;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .btn-create-contract i {
+            font-size: 1rem;
+        }
         .messages {
             height: 350px;
             overflow-y: auto;
@@ -132,6 +169,65 @@
         }
         .btn-send:hover {
             background-color: #6d0808;
+        }
+        .modal-content {
+            border-radius: 10px;
+            border: none;
+        }
+
+        .modal-header {
+            background-color: #8f0b0b;
+            color: #ffffff;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .modal-title {
+            font-weight: 600;
+        }
+
+        .close {
+            color: #ffffff;
+        }
+
+        .close:hover {
+            color: #f8f9fa;
+        }
+
+        #createContractForm .form-group {
+            margin-bottom: 20px;
+        }
+
+        #createContractForm label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        #createContractForm .btn-primary {
+            background-color: #8f0b0b;
+            border-color: #8f0b0b;
+        }
+
+        #createContractForm .btn-primary:hover {
+            background-color: #6d0808;
+            border-color: #6d0808;
+        }
+        #viewContractModal .modal-body {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        #viewContractModal .contract-terms {
+            white-space: pre-wrap;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+        }
+
+        #viewContractModal .signature-status {
+            margin-top: 20px;
         }
         footer {
             color: white;
@@ -193,15 +289,33 @@
                     <c:forEach var="conversation" items="${conversations}">
                         <div class="conversation-item ${conversation.id == param.exchangeId ? 'active' : ''}"
                              onclick="loadConversation(${conversation.id}, ${conversation.getOtherUserId(sessionScope.userId)})">
-                            <strong>${conversation.getOtherUserUsername(sessionScope.userId)}</strong>
-                            <p>${fn:substring(conversation.status, 0, 30)}...</p>
+                            <strong>${StringUtils.capitalizeWords(conversation.getOtherUserUsername(sessionScope.userId))}</strong>
+                            <p>Exchange ${StringUtils.capitalizeFirstLetter(fn:substring(conversation.status, 0, 30))}</p>
                         </div>
                     </c:forEach>
                 </div>
                 <div class="col-md-8">
                     <div class="messages-header">
-                        <h4>${selectedItem}</h4>
-                        <p>Exchanging with: ${selectedConversation.getOtherUserUsername(sessionScope.userId)}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4>${selectedItem}</h4>
+                                <p class="mb-0">Exchanging with: ${selectedConversation.getOtherUserUsername(sessionScope.userId)}</p>
+                            </div>
+                            <c:choose>
+                                <c:when test="${contractExists}">
+                                    <button type="button" class="btn btn-success btn-contract" data-toggle="modal" data-target="#viewContractModal">
+                                        <i class="fas fa-eye mr-2"></i>View Contract
+                                    </button>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:if test="${isOwner}">
+                                        <button type="button" class="btn btn-create-contract btn-contract" data-toggle="modal" data-target="#createContractModal">
+                                            <i class="fas fa-file-signature mr-2"></i>Create Contract
+                                        </button>
+                                    </c:if>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
                     <div class="messages">
                         <c:forEach var="message" items="${messages}">
@@ -224,6 +338,76 @@
                         </button>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Contract Modal -->
+<div class="modal fade" id="createContractModal" tabindex="-1" role="dialog" aria-labelledby="createContractModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createContractModalLabel">Create Contract</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="createContractForm" action="createContract" method="post">
+                    <input type="hidden" name="exchangeId" value="${param.exchangeId}">
+                    <div class="form-group">
+                        <label for="contractTerms">Contract Terms</label>
+                        <textarea class="form-control" id="contractTerms" name="terms" rows="10" required></textarea>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="signedByOwner" name="signedByOwner">
+                        <label class="form-check-label" for="signedByOwner">Sign as Owner</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Contract</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Contract Modal -->
+<div class="modal fade" id="viewContractModal" tabindex="-1" role="dialog" aria-labelledby="viewContractModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewContractModalLabel">View Contract</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h6>Contract Terms:</h6>
+                <div class="contract-terms">${contract.terms}</div>
+                <div class="signature-status">
+                    <p>Signed by Owner: ${contract.signedByOwner ? 'Yes' : 'No'}</p>
+                    <p>Signed by Interested User: ${contract.signedByInterestedUser ? 'Yes' : 'No'}</p>
+                </div>
+                <c:if test="${isOwner}">
+                    <form id="editContractForm" action="EditContractServlet" method="post">
+                        <input type="hidden" name="contractId" value="${contract.id}">
+                        <div class="form-group">
+                            <label for="editContractTerms">Edit Contract Terms:</label>
+                            <textarea class="form-control" id="editContractTerms" name="terms" rows="10" required>${contract.terms}</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Contract</button>
+                    </form>
+                </c:if>
+                <c:if test="${not isOwner and not contract.signedByInterestedUser}">
+                    <form id="signContractForm" action="SignContractServlet" method="post">
+                        <input type="hidden" name="contractId" value="${contract.id}">
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="signedByInterestedUser" name="signedByInterestedUser">
+                            <label class="form-check-label" for="signedByInterestedUser">Sign as Interested User</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Sign Contract</button>
+                    </form>
+                </c:if>
             </div>
         </div>
     </div>
