@@ -262,7 +262,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="UserExchangesServlet">
                     <i class="fas fa-exchange-alt mr-2"></i> Exchanged Items
                 </a>
             </li>
@@ -331,7 +331,7 @@
                         <input type="hidden" name="senderId" value="${sessionScope.userId}">
                         <input type="hidden" name="receiverId" value="${param.receiverId}">
                         <div class="form-group">
-                            <textarea class="form-control" name="content" rows="3" placeholder="Type your message here..." required></textarea>
+                            <textarea class="form-control" name="messageContent" rows="3" placeholder="Type your message here..." required></textarea>
                         </div>
                         <button type="submit" class="btn btn-send">
                             <i class="fas fa-paper-plane mr-2"></i>Send Message

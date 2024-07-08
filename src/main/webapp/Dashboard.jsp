@@ -119,8 +119,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="">
-                    <i class="fas fa-exchange-alt mr-2"></i> Exchanged Items
+                <a class="nav-link" href="UserExchangesServlet">
+                    <i class="fas fa-exchange-alt mr-2"></i> My Exchanges
                 </a>
             </li>
             <li class="nav-item">

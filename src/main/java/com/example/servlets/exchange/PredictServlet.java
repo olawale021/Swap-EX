@@ -18,27 +18,34 @@ import java.util.ArrayList;
 @WebServlet("/PredictServlet")
 public class PredictServlet extends HttpServlet {
 
+    // Classifier instance to hold the loaded model
     private Classifier classifier;
 
+    // Initialize the servlet and load the pre-trained model
     @Override
     public void init() throws ServletException {
         super.init();
         try {
+            // Load the RandomForest model from the file system
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/Users/olawale/Desktop/javacs/MangoEX/src/main/resources/models/RandomsForest2.model"));
             classifier = (Classifier) ois.readObject();
             ois.close();
         } catch (Exception e) {
+            // Handle any errors during model loading
             throw new ServletException("Error loading model", e);
         }
     }
 
+    // Handle GET requests to forward the user to the prediction page
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("new-predict.jsp").forward(request, response);
     }
 
+    // Handle POST requests to make predictions using the loaded model
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Retrieve input parameters from the form
         String brand = request.getParameter("brand");
         String model = request.getParameter("model");
         String type = request.getParameter("type");
@@ -47,7 +54,9 @@ public class PredictServlet extends HttpServlet {
         String size = request.getParameter("size");
 
         try {
+            // Define the attributes used for prediction
             ArrayList<Attribute> attributes = new ArrayList<>();
+            // Possible values for each attribute
             ArrayList<String> brandValues = new ArrayList<String>() {{
                 add("IKEA");
                 add("HP");
@@ -121,6 +130,7 @@ public class PredictServlet extends HttpServlet {
                 add("Clothing");
             }};
 
+            // Add attributes to the list with their possible values
             attributes.add(new Attribute("Brand", brandValues));
             attributes.add(new Attribute("Model", modelValues));
             attributes.add(new Attribute("Type", typeValues));
@@ -129,9 +139,11 @@ public class PredictServlet extends HttpServlet {
             attributes.add(new Attribute("Size", sizeValues));
             attributes.add(new Attribute("Category", categoryValues));
 
+            // Create a new Instances object to hold the data
             Instances data = new Instances("TestInstances", attributes, 0);
-            data.setClassIndex(data.numAttributes() - 1);
+            data.setClassIndex(data.numAttributes() - 1); // Set the class attribute (the one to predict)
 
+            // Create a DenseInstance to represent the user's input
             DenseInstance instance = new DenseInstance(data.numAttributes());
             instance.setValue(attributes.get(0), brand);
             instance.setValue(attributes.get(1), model);
@@ -140,16 +152,21 @@ public class PredictServlet extends HttpServlet {
             instance.setValue(attributes.get(4), ram);
             instance.setValue(attributes.get(5), size);
 
+            // Add the instance to the dataset
             data.add(instance);
 
+            // Predict the category using the classifier
             double predictionIndex = classifier.classifyInstance(data.instance(0));
             String prediction = data.classAttribute().value((int) predictionIndex);
 
+            // Set the prediction result as a request attribute
             request.setAttribute("prediction", prediction);
         } catch (Exception e) {
+            // Handle any errors during prediction
             throw new ServletException("Error predicting category", e);
         }
 
+        // Forward the request to the prediction results page
         request.getRequestDispatcher("new-predict.jsp").forward(request, response);
     }
 }

@@ -29,14 +29,17 @@ public class UpdateItemServlet extends HttpServlet {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private ItemDAO itemDAO = new ItemDAO();
 
+    // Handles POST requests to update an item's details
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Retrieve item details from the request parameters
         int itemId = Integer.parseInt(request.getParameter("itemId"));
         String description = request.getParameter("description");
         String condition = request.getParameter("condition");
         String features = request.getParameter("features");
         int categoryId = Integer.parseInt(request.getParameter("category"));
 
+        // Create and populate an ItemModel object with the new data
         ItemModel item = new ItemModel();
         item.setId(itemId);
         item.setDescription(description);
@@ -49,46 +52,51 @@ public class UpdateItemServlet extends HttpServlet {
         if (existingImages != null) {
             for (String image : existingImages) {
                 if (image != null && !image.trim().isEmpty()) {
-                    item.getPhotos().add(image);
+                    item.getPhotos().add(image); // Add existing photos to the item
                 }
             }
         }
 
-        // Handle new images
+        // Handle new image uploads
         for (Part part : request.getParts()) {
             if (part.getName().equals("photos") && part.getSize() > 0) {
-                // Use Cloudinary to upload the image
+                // Upload new images to Cloudinary and add the URLs to the item
                 String photoUrl = uploadImageToCloudinary(part);
                 item.getPhotos().add(photoUrl);
             }
         }
 
         try {
-            // Update the item using ItemDAO
+            // Update the item in the database using ItemDAO
             itemDAO.updateItem(item);
             LOGGER.info("Item updated successfully.");
-            response.sendRedirect("UserItemsServlet?success=true");
+            response.sendRedirect("UserItemsServlet?success=true"); // Redirect on successful update
         } catch (SQLException e) {
+            // Log any errors and redirect with an error message
             LOGGER.log(Level.SEVERE, "Error updating item", e);
             response.sendRedirect("UserItemsServlet?error=update-error");
         }
     }
 
+    // Uploads an image to Cloudinary and returns the URL
     private String uploadImageToCloudinary(Part part) throws IOException {
         Cloudinary cloudinary = CloudinaryConfig.getCloudinary();
 
         Map uploadResult;
         try (InputStream inputStream = part.getInputStream()) {
+            // Create a temporary file to hold the image data
             File tempFile = File.createTempFile("upload-", ".tmp");
             try (FileOutputStream out = new FileOutputStream(tempFile)) {
                 inputStream.transferTo(out);
             }
+            // Upload the image to Cloudinary
             uploadResult = cloudinary.uploader().upload(tempFile, ObjectUtils.emptyMap());
             tempFile.delete(); // Clean up the temp file after upload
         }
-        return uploadResult.get("url").toString();
+        return uploadResult.get("url").toString(); // Return the URL of the uploaded image
     }
 
+    // Converts a list of photo URLs to a JSON string
     private String convertPhotosListToJson(List<String> photos) {
         if (photos == null || photos.isEmpty()) {
             return "[]";
@@ -96,9 +104,9 @@ public class UpdateItemServlet extends HttpServlet {
         return "[\"" + String.join("\",\"", photos) + "\"]";
     }
 
+    // Handles GET requests, typically redirecting to the user's items page
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Either handle the GET request or redirect to an appropriate page
-        response.sendRedirect("UserItemsServlet");
+        response.sendRedirect("UserItemsServlet"); // Redirect to the items page
     }
 }

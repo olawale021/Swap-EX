@@ -21,7 +21,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a class="nav-link" href="index.jsp">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="AllItemsServlet">All Items</a></li>
-                <li class="nav-item"><a class="nav-link" href="predict">Predict Category</a></li>
+                <li class="nav-item"><a class="nav-link" href="PredictServlet">Predict Category</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">How It Works</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
                 <c:choose>
