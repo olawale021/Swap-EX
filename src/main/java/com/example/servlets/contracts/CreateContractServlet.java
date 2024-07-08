@@ -51,7 +51,7 @@ public class CreateContractServlet extends HttpServlet {
 
             contractDAO.createContract(contract);
 
-            response.sendRedirect("/MessageServlet?exchangeId=" + exchangeId);
+            response.sendRedirect("MessageServlet?exchangeId=" + exchangeId);
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Database error while creating contract", e);
             request.setAttribute("errorMessage", "An error occurred while creating the contract. Please try again later.");
