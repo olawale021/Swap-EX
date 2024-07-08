@@ -143,6 +143,10 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="features">Features</label>
+                    <textarea class="form-control" id="features" name="features" required></textarea>
+                </div>
+                <div class="form-group">
                     <label for="photos">Photos</label>
                     <input type="file" class="form-control-file" id="photos" name="photos" multiple accept="image/*">
                 </div>

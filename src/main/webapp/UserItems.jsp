@@ -206,10 +206,14 @@
                                         data-description="${item.description}"
                                         data-condition="${item.condition}"
                                         data-category="${item.categoryId}"
+                                        data-features="${item.features}"
                                         data-photos='<c:out value="${item.photosJson}"/>'>
                                     Edit
                                 </button>
-                                <button onclick="confirmDelete(${item.id})" class="btn btn-outline-danger btn-sm">Delete</button>
+                                <form action="DeleteItemServlet?id=${item.id}" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');" style="display: inline;">
+                                    <input type="hidden" name="itemId" value="${item.id}">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -255,6 +259,10 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="editFeatures">Features</label>
+                        <textarea class="form-control" id="editFeatures" name="features" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
                         <label>Images</label>
                         <div class="image-upload-container" id="imageContainer">
                             <!-- Existing images will be added here dynamically -->
@@ -283,6 +291,7 @@
         const description = $(button).data('description');
         const condition = $(button).data('condition');
         const categoryId = $(button).data('category');
+        const features = $(button).data('features');
         const photosString = $(button).attr('data-photos');
 
         let photos = [];
@@ -297,6 +306,7 @@
         $('#editDescription').val(description);
         $('#editCondition').val(condition);
         $('#editCategory').val(categoryId);
+        $('#editFeatures').val(features);
 
         // Clear previous images
         $('#imageContainer').empty();

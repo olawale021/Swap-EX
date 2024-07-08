@@ -19,7 +19,7 @@ public class ItemDAO {
     private static final Logger LOGGER = Logger.getLogger(ItemDAO.class.getName());
 
     public int addItem(ItemModel item) throws SQLException {
-        String sql = "INSERT INTO items (user_id, category_id, title, description, condition, photos, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO items (user_id, category_id, title, description, condition, features, photos, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -29,9 +29,10 @@ public class ItemDAO {
             pstmt.setString(3, item.getTitle());
             pstmt.setString(4, item.getDescription());
             pstmt.setString(5, item.getCondition());
-            pstmt.setString(6, new JSONArray(item.getPhotos()).toString());
-            pstmt.setTimestamp(7, item.getCreatedAt());
-            pstmt.setTimestamp(8, item.getUpdatedAt());
+            pstmt.setString(6, item.getFeatures());
+            pstmt.setString(7, new JSONArray(item.getPhotos()).toString());
+            pstmt.setTimestamp(8, item.getCreatedAt());
+            pstmt.setTimestamp(9, item.getUpdatedAt());
 
             int affectedRows = pstmt.executeUpdate();
 
@@ -66,6 +67,7 @@ public class ItemDAO {
                         rs.getString("title"),
                         rs.getString("description"),
                         rs.getString("condition"),
+                        rs.getString("features"),
                         photosList,
                         rs.getTimestamp("created_at"),
                         rs.getTimestamp("updated_at"),
@@ -96,6 +98,7 @@ public class ItemDAO {
                         rs.getString("title"),
                         rs.getString("description"),
                         rs.getString("condition"),
+                        rs.getString("features"),
                         photosList,
                         rs.getTimestamp("created_at"),
                         rs.getTimestamp("updated_at"),
@@ -122,16 +125,17 @@ public class ItemDAO {
     }
 
     public boolean updateItem(ItemModel item) throws SQLException {
-        String sql = "UPDATE items SET description = ?, condition = ?, category_id = ?, photos = ?, updated_at = ? WHERE id = ?";
+        String sql = "UPDATE items SET description = ?, condition = ?, category_id = ?, features = ?, photos = ?, updated_at = ? WHERE id = ?";
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, item.getDescription());
             stmt.setString(2, item.getCondition());
             stmt.setInt(3, item.getCategoryId());
-            stmt.setString(4, convertPhotosListToJson(item.getPhotos()));
-            stmt.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
-            stmt.setInt(6, item.getId());
+            stmt.setString(4, item.getFeatures());
+            stmt.setString(5, convertPhotosListToJson(item.getPhotos()));
+            stmt.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
+            stmt.setInt(7, item.getId());
 
             LOGGER.info("Executing SQL: " + stmt.toString());
             int rowsUpdated = stmt.executeUpdate();
@@ -189,6 +193,7 @@ public class ItemDAO {
                         rs.getString("title"),
                         rs.getString("description"),
                         rs.getString("condition"),
+                        rs.getString("features"),
                         photosList,
                         rs.getTimestamp("created_at"),
                         rs.getTimestamp("updated_at"),
@@ -197,6 +202,38 @@ public class ItemDAO {
                 ));
             }
         }
+        return items;
+    }
+
+    public List<ItemModel> getAllItemsSortedByDate() throws SQLException {
+        List<ItemModel> items = new ArrayList<>();
+        String query = "SELECT items.*, categories.name as category_name FROM items JOIN categories ON items.category_id = categories.id ORDER BY items.created_at DESC";
+
+        try (Connection connection = getConnection();
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                List<String> photosList = parsePhotos(rs.getString("photos"));
+                String photosJson = convertPhotosListToJson(photosList);
+
+                items.add(new ItemModel(
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getInt("category_id"),
+                        rs.getString("title"),
+                        rs.getString("description"),
+                        rs.getString("condition"),
+                        rs.getString("features"),
+                        photosList,
+                        rs.getTimestamp("created_at"),
+                        rs.getTimestamp("updated_at"),
+                        rs.getString("category_name"),
+                        photosJson
+                ));
+            }
+        }
+
         return items;
     }
 

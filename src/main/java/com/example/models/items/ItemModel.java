@@ -11,6 +11,7 @@ public class ItemModel {
     private String title;
     private String description;
     private String condition;
+    private String features;
     private List<String> photos;
     private Timestamp createdAt;
     private Timestamp updatedAt;
@@ -23,13 +24,14 @@ public class ItemModel {
     }
 
     // Parameterized constructor with list initialization
-    public ItemModel(int id, int userId, int categoryId, String title, String description, String condition, List<String> photos, Timestamp createdAt, Timestamp updatedAt, String categoryName, String photosJson) {
+    public ItemModel(int id, int userId, int categoryId, String title, String description, String condition, String features, List<String> photos, Timestamp createdAt, Timestamp updatedAt, String categoryName, String photosJson) {
         this.id = id;
         this.userId = userId;
         this.categoryId = categoryId;
         this.title = title;
         this.description = description;
         this.condition = condition;
+        this.features = features;
         this.photos = photos != null ? photos : new ArrayList<>();
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -86,6 +88,12 @@ public class ItemModel {
 
     public void setCondition(String condition) {
         this.condition = condition;
+    }
+    public String getFeatures() {
+        return features;
+    }
+    public void setFeatures(String features) {
+        this.features = features;
     }
 
     public List<String> getPhotos() {

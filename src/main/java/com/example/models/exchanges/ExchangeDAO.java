@@ -41,7 +41,8 @@ public class ExchangeDAO {
                 "JOIN users o ON e.owner_id = o.id " +
                 "JOIN users iu ON e.interested_user_id = iu.id " +
                 "JOIN items i ON e.item_id = i.id " +
-                "WHERE e.owner_id = ? OR e.interested_user_id = ?";
+                "WHERE e.owner_id = ? OR e.interested_user_id = ? " +
+                "ORDER BY e.created_at DESC";
         List<ExchangeModel> exchanges = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, userId);

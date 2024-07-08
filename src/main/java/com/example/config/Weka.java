@@ -14,11 +14,11 @@ public class Weka {
     public static void main(String[] args) {
         try {
             // Load the ARFF file
-            DataSource source = new DataSource("/Users/olawale/Desktop/javacs/MangoEX/src/main/resources/items.arff");
+            DataSource source = new DataSource("/Users/olawale/Desktop/javacs/MangoEX/src/main/resources/dataset.arff");
             Instances data = source.getDataSet();
 
             // Set the class index (the attribute to be predicted)
-            data.setClassIndex(0);
+            data.setClassIndex(data.numAttributes() - 1);
 
             // Create the StringToWordVector filter
             StringToWordVector filter = new StringToWordVector();
@@ -37,7 +37,7 @@ public class Weka {
             fc.buildClassifier(data);
 
             // Save the model
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("/Users/olawale/Desktop/javacs/MangoEX/src/main/resources/models/RandomsForest.model"));
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("/Users/olawale/Desktop/javacs/MangoEX/src/main/resources/models/RandomsForest2.model"));
             out.writeObject(fc);
             out.close();
 

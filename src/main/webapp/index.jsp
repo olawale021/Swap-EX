@@ -17,13 +17,13 @@
         .hero {
             background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://res.cloudinary.com/dtvclnkeo/image/upload/v1719371344/swap_red_ay6raa.jpg') no-repeat center center;
             background-size: cover;
-            height: 70vh; /* Changed from 70vh to 100vh */
+            height: 70vh;
             display: flex;
             align-items: center;
-            justify-content: center; /* Added to center content horizontally */
+            justify-content: center;
             color: white;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            position: relative; /* Added to allow absolute positioning of child elements if needed */
+            position: relative;
         }
 
         .hero .container {

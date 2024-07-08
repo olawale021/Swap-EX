@@ -12,7 +12,7 @@ public class ExportToArff {
     public static void main(String[] args) {
         String query = "SELECT c.name AS item_category, i.description AS item_name, i.features AS item_features " +
                 "FROM items i JOIN categories c ON i.category_id = c.id";
-        String arffFilePath = "/Users/olawale/Desktop/javacs/MangoEX/src/main/resources/items.arff";  // Update this with the desired output path
+        String arffFilePath = "/Users/olawale/Desktop/javacs/MangoEX/src/main/resources/items.arff";
 
         try (Connection conn = DBConnection.getConnection();
              Statement stmt = conn.createStatement();

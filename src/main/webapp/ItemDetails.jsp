@@ -173,12 +173,13 @@
                     </div>
                     <div class="item-details">
                         <h1 class="item-title">${item.description}</h1>
-                        <p class="item-info"><i class="fas fa-star"></i> <strong>Condition:</strong> ${item.condition}</p>
-                        <p class="item-info"><i class="fas fa-tags"></i> <strong>Category:</strong> ${item.categoryName}</p>
+                        <p class="item-info"><i class="fas fa-star"></i> <strong>Condition: </strong> ${item.condition}</p>
+                        <p class="item-info"><i class="fas fa-tags"></i> <strong>Category: </strong> ${item.categoryName}</p>
                         <p class="item-description">
                             <i class="fas fa-info-circle"></i>
-                            <strong>Description:</strong> ${item.title}
+                            <strong>Description: </strong> ${item.title}
                         </p>
+                        <p class="item-info"><i class="fas fa-cogs"></i> <strong>Item Feature: </strong>  ${item.features}</p>
                         <div class="action-buttons">
                             <a href="AllItemsServlet" class="btn-back">
                                 <i class="fas fa-arrow-left mr-2"></i>Back

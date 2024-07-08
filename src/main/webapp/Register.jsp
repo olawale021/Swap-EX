@@ -103,7 +103,7 @@
                 </div>
                 <div class="form-group">
                     <label for="phoneNumber">Phone Number</label>
-                    <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" required>
+                    <input type="number" class="form-control" id="phoneNumber" name="phoneNumber" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>

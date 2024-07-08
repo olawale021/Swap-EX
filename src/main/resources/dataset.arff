@@ -1,0 +1,28 @@
+@relation ItemsDataset
+
+@attribute Brand {IKEA, HP, LG, River_Island, DELL, Sony, Apple, ASUS, Samsung, Crayola, Nike, Whirlpool, Adidas None}
+@attribute Model {Galaxy_S21, G5_15, iPhone_13_Pro_Max, WH-1000XM4, MacBook_Air, Spectre_x360, ROG_Strix, Ultra_One, None}
+@attribute Type {Wardrobe, Monitor, Laptop, Table, Jumper_Dress, Bookshelf, Top, Washer, Dryer, Phone, Camera, Vacuum_Cleaner, None}
+@attribute Colour {Black, Grey, White, Blue, Red, Brown, Pink, Yellow, Silver, None}
+@attribute RAM {8GB, 16GB, 32GB, None}
+@attribute Size {S, M, L, XL, None}
+@attribute Category {Furniture, Electronics, Clothing}
+
+@data
+
+IKEA,None,Wardrobe,Grey,None,None,Furniture
+HP,Spectre_x360,Laptop,Silver,8GB,None,Electronics
+IKEA,None,Table,White,None,None,Furniture
+River_Island,None,Jumper_Dress,Red,None,M,Clothing
+DELL,G5_15,Laptop,Black,16GB,None,Electronics
+IKEA,None,Table,Black,None,None,Furniture
+Sony,WH-1000XM4,Monitor,Black,32GB,None,Electronics
+IKEA,None,Bookshelf,Brown,None,None,Furniture
+Adidas,None,Top,White,None,XL,Clothing
+Apple,iPhone_13_Pro_Max,Phone,Black,16GB,None,Electronics
+Samsung,Galaxy_S21,Phone,Black,None,None,Electronics
+Whirlpool,None,Washer,White,None,None,Electronics
+Whirlpool,None,Dryer,White,None,None,Electronics
+HP,Spectre_x360,Laptop,Black,16GB,None,Electronics
+ASUS,ROG_Strix,Laptop,Black,32GB,None,Electronics
+Nike,None,Top,Black,None,L,Clothing

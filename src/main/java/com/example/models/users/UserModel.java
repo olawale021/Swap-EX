@@ -1,19 +1,18 @@
 package com.example.models.users;
 
-
 import org.json.JSONObject;
 
 public class UserModel {
     private int id;
     private String username;
-    private int phoneNumber;
+    private String phoneNumber;  // Change to string
     private String password;
     private JSONObject address;
 
-    // Constructors
+    // Constructors, getters, and setters
     public UserModel() {}
 
-    public UserModel(int id, String username, int phoneNumber, String password, JSONObject address) {
+    public UserModel(int id, String username, String phoneNumber, String password, JSONObject address) {
         this.id = id;
         this.username = username;
         this.phoneNumber = phoneNumber;
@@ -21,7 +20,7 @@ public class UserModel {
         this.address = address;
     }
 
-    // Getters and Setters
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -38,11 +37,11 @@ public class UserModel {
         this.username = username;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

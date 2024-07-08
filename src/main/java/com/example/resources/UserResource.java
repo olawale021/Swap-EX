@@ -28,7 +28,7 @@ public class UserResource {
             JSONObject json = new JSONObject(userData);
             UserModel user = new UserModel();
             user.setUsername(json.getString("username"));
-            user.setPhoneNumber(json.getInt("phoneNumber"));
+            user.setPhoneNumber(json.getString("phoneNumber"));
             user.setPassword(json.getString("password"));
             JSONObject addressJson = json.getJSONObject("address");
             user.setAddress(addressJson);
@@ -58,7 +58,7 @@ public class UserResource {
             if (user != null) {
                 LOGGER.info("Login successful for username: " + username);
                 JSONObject userJson = new JSONObject();
-                userJson.put("id", user.getId());  // Assuming UserModel has an getId() method
+                userJson.put("id", user.getId());
                 userJson.put("username", user.getUsername());
                 return Response.status(Response.Status.OK).entity(userJson.toString()).build();
             } else {
